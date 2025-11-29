@@ -1,0 +1,8 @@
+{
+  "name": "Onzy Digital Solutions",
+  "description": "A high-end digital agency site replicating the Cortex aesthetic, featuring AI-powered tools, image editing, and chat capabilities.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
