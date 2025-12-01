@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { TrendingUp, CheckCircle2 } from 'lucide-react';
+import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import { TrendingUp, CheckCircle2, Circle } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 // Card Data
-const CARDS = [
+const INITIAL_CARDS = [
   {
     id: 1,
     badge: "RELATÓRIO MENSAL",
@@ -52,16 +52,30 @@ const CARDS = [
 ];
 
 export const PerformanceSection: React.FC = () => {
-  const [cards, setCards] = useState(CARDS);
+  const [cards, setCards] = useState(INITIAL_CARDS);
   
-  const moveToEnd = (fromIndex: number) => {
-    setCards((currentCards) => {
-      const newCards = [...currentCards];
-      const [movedCard] = newCards.splice(fromIndex, 1);
-      newCards.push(movedCard);
-      return newCards;
-    });
+  // Logic: Drag Left -> Next Card | Drag Right -> Prev Card
+  const handleDragEnd = (offsetX: number) => {
+    if (offsetX < -50) {
+      // Dragged Left -> Next (Move first to last)
+      setCards((currentCards) => {
+        const newCards = [...currentCards];
+        const first = newCards.shift();
+        if (first) newCards.push(first);
+        return newCards;
+      });
+    } else if (offsetX > 50) {
+      // Dragged Right -> Prev (Move last to first)
+      setCards((currentCards) => {
+        const newCards = [...currentCards];
+        const last = newCards.pop();
+        if (last) newCards.unshift(last);
+        return newCards;
+      });
+    }
   };
+
+  const activeCardId = cards[0].id;
 
   return (
     <section className="bg-black text-white py-24 md:py-32 rounded-t-[3rem] relative z-20 -mt-12 shadow-[0_-20px_60px_rgba(0,0,0,0.5)] overflow-hidden">
@@ -90,11 +104,11 @@ export const PerformanceSection: React.FC = () => {
           </div>
 
           {/* Right Content - Draggable 3D Stack */}
-          <div className="relative h-[500px] flex items-center justify-center perspective-1000">
+          <div className="relative h-[550px] flex flex-col items-center justify-center perspective-1000">
              {/* Background glow behind cards */}
-             <div className="absolute inset-0 bg-onzy-orange/10 blur-[120px] rounded-full pointer-events-none"></div>
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-onzy-orange/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-             <div className="relative w-full max-w-md h-[420px]">
+             <div className="relative w-full max-w-md h-[420px] mb-8">
                {cards.map((card, index) => {
                  const isFront = index === 0;
                  return (
@@ -102,11 +116,26 @@ export const PerformanceSection: React.FC = () => {
                      key={card.id} 
                      card={card} 
                      index={index} 
-                     onDragEnd={() => moveToEnd(0)}
+                     onDragEnd={handleDragEnd}
                      isFront={isFront}
                    />
                  );
                })}
+             </div>
+
+             {/* Indicators */}
+             <div className="flex gap-3 z-10 mt-4">
+               {INITIAL_CARDS.map((card) => (
+                 <div 
+                   key={card.id}
+                   className={`
+                     transition-all duration-300 rounded-full
+                     ${card.id === activeCardId 
+                        ? 'w-8 h-2 bg-onzy-orange' 
+                        : 'w-2 h-2 bg-gray-700 hover:bg-gray-600'}
+                   `}
+                 />
+               ))}
              </div>
           </div>
 
@@ -118,15 +147,15 @@ export const PerformanceSection: React.FC = () => {
 
 const Card = ({ card, index, onDragEnd, isFront }: any) => {
   const x = useMotionValue(0);
-  const scale = useTransform(x, [-200, 0, 200], [0.8, 1, 0.8]);
-  const rotate = useTransform(x, [-200, 0, 200], [-10, 0, 10]);
-  const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
+  const scale = useTransform(x, [-200, 0, 200], [0.9, 1, 0.9]);
+  const rotate = useTransform(x, [-200, 0, 200], [-5, 0, 5]);
+  const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0.5, 1, 1, 1, 0.5]);
 
   // Stack visuals
-  const yOffset = index * 15;
+  const yOffset = index * 12;
   const scaleOffset = 1 - index * 0.05;
-  const opacityOffset = 1 - index * 0.2;
-  const zIndex = CARDS.length - index;
+  const opacityOffset = 1 - index * 0.15; // More visible stack
+  const zIndex = 100 - index; // Ensure correct stacking order
 
   return (
     <motion.div
@@ -141,22 +170,24 @@ const Card = ({ card, index, onDragEnd, isFront }: any) => {
       drag={isFront ? "x" : false}
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={(_, info) => {
-        if (Math.abs(info.offset.x) > 100) {
-          onDragEnd();
+        // Trigger navigation if dragged far enough
+        if (Math.abs(info.offset.x) > 50) {
+          onDragEnd(info.offset.x);
         }
       }}
       animate={{
         y: yOffset,
         scale: isFront ? 1 : scaleOffset,
         opacity: isFront ? 1 : opacityOffset,
+        rotate: isFront ? 0 : 0 // Reset rotation on release
       }}
-      transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className={`absolute top-0 left-0 w-full bg-white rounded-[2rem] p-6 shadow-2xl border border-gray-100 select-none cursor-grab active:cursor-grabbing ${
-        isFront ? 'hover:shadow-[0_20px_50px_rgba(255,85,0,0.15)]' : ''
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className={`absolute top-0 left-0 w-full bg-white rounded-[2rem] p-6 shadow-2xl border border-gray-100 select-none cursor-grab active:cursor-grabbing overflow-hidden ${
+        isFront ? 'hover:shadow-[0_20px_50px_rgba(255,85,0,0.2)]' : ''
       }`}
     >
       {/* Badge */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 relative z-10">
          <div className="text-xs font-bold text-onzy-orange bg-orange-50 px-3 py-1 rounded-full uppercase tracking-wider">
             {card.badge}
          </div>
@@ -164,10 +195,10 @@ const Card = ({ card, index, onDragEnd, isFront }: any) => {
       </div>
 
       {/* Content */}
-      <h3 className="text-2xl font-bold text-gray-900 mb-6">{card.title}</h3>
+      <h3 className="text-2xl font-bold text-gray-900 mb-6 relative z-10">{card.title}</h3>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
          {card.metrics.map((m: any, i: number) => (
              <div key={i} className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
                 <div className="text-xs text-gray-500 mb-1">{m.label}</div>
@@ -177,7 +208,7 @@ const Card = ({ card, index, onDragEnd, isFront }: any) => {
       </div>
 
       {/* Description */}
-      <div className="flex items-center gap-3 text-gray-600 text-sm mb-8">
+      <div className="flex items-center gap-3 text-gray-600 text-sm mb-8 relative z-10">
          <div className="p-2 bg-gray-100 rounded-full text-gray-800">
             <TrendingUp size={16} />
          </div>
@@ -185,13 +216,13 @@ const Card = ({ card, index, onDragEnd, isFront }: any) => {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-gray-100 pt-4 flex items-center gap-2 text-xs font-medium text-gray-500">
+      <div className="border-t border-gray-100 pt-4 flex items-center gap-2 text-xs font-medium text-gray-500 relative z-10">
          <CheckCircle2 size={14} className="text-green-500" />
          {card.footer}
       </div>
       
-      {/* Decorative Wave */}
-      <div className="absolute bottom-0 left-0 w-full h-2 rounded-b-[2rem] bg-gradient-to-r from-onzy-orange to-yellow-500 opacity-80"></div>
+      {/* Decorative Wave - Adjusted to prevent visual bug */}
+      <div className="absolute -bottom-1 -left-1 -right-1 h-3 bg-gradient-to-r from-onzy-orange to-yellow-500 opacity-90 blur-[1px]"></div>
     </motion.div>
   );
 };
