@@ -9,6 +9,7 @@ import { PerformanceSection } from './components/sections/PerformanceSection';
 import { AiChatSimulation } from './components/sections/AiChatSimulation';
 import { PartnerLogos } from './components/sections/PartnerLogos';
 import { ContactForm } from './components/sections/ContactForm';
+import { RadarDashboard } from './components/sections/RadarDashboard';
 import { 
   Globe, Database, 
   ArrowRight, Search, BarChart3, ShieldCheck, 
@@ -247,7 +248,10 @@ const App: React.FC = () => {
           </div>
       </section>
 
-      {/* SECTION 8: CONTACT FORM (Replaces Footer CTA) */}
+      {/* SECTION 8: RADAR DASHBOARD (New Section) */}
+      <RadarDashboard />
+
+      {/* SECTION 9: CONTACT FORM (Replaces Footer CTA) */}
       <ContactForm />
 
       {/* FOOTER (Dark - Just Links) */}
