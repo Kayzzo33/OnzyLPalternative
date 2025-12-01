@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { User, Building, Phone, ArrowRight, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 
 export const ContactForm: React.FC = () => {
@@ -29,7 +29,11 @@ export const ContactForm: React.FC = () => {
   const progress = (filledCount / 3) * 100;
 
   return (
-    <section id="contato" className="relative py-24 md:py-32 overflow-hidden bg-gradient-to-b from-white to-gray-100">
+    <section 
+      id="contato" 
+      // UPDATED: Added rounded-t-[3rem] -mt-12 z-50 for smooth transition
+      className="relative py-24 md:py-32 overflow-hidden bg-gradient-to-b from-white to-gray-100 rounded-t-[3rem] -mt-12 z-50"
+    >
       
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-onzy-orange/5 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
@@ -46,7 +50,7 @@ export const ContactForm: React.FC = () => {
                viewport={{ once: true }}
                transition={{ duration: 0.6 }}
              >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-onzy-orange text-xs font-bold uppercase tracking-widest mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-100 text-onzy-orange text-xs font-bold uppercase tracking-widest mb-6">
                    <Sparkles size={12} />
                    Start Your Journey
                 </div>
@@ -138,7 +142,7 @@ export const ContactForm: React.FC = () => {
                          {/* Progress Bar */}
                          <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
                             <motion.div 
-                               className="h-full bg-gradient-to-r from-onzy-orange to-yellow-500"
+                               className="h-full bg-gradient-to-r from-onzy-orange to-fuchsia-500"
                                initial={{ width: 0 }}
                                animate={{ width: `${Math.max(5, progress)}%` }}
                                transition={{ duration: 0.5 }}
@@ -204,7 +208,7 @@ export const ContactForm: React.FC = () => {
                       <button
                         type="submit"
                         disabled={status === 'loading'}
-                        className="w-full group relative overflow-hidden bg-gradient-to-r from-onzy-orange to-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-orange-500/25 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="w-full group relative overflow-hidden bg-gradient-to-r from-onzy-orange to-purple-600 text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
                       >
                          <span className="relative z-10 flex items-center justify-center gap-2">
                             {status === 'loading' ? (

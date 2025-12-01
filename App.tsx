@@ -48,7 +48,7 @@ const HeroButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="group relative px-8 py-4 bg-gradient-to-r from-onzy-orange to-orange-600 text-white rounded-full font-bold uppercase tracking-wider overflow-hidden shadow-[0_10px_30px_rgba(255,85,0,0.3)] hover:shadow-[0_10px_40px_rgba(255,85,0,0.5)] transition-all duration-300"
+      className="group relative px-8 py-4 bg-gradient-to-r from-onzy-orange to-purple-600 text-white rounded-full font-bold uppercase tracking-wider overflow-hidden shadow-[0_10px_30px_rgba(139,92,246,0.3)] hover:shadow-[0_10px_40px_rgba(139,92,246,0.5)] transition-all duration-300"
     >
       <span className="inline-block transition-all duration-300 group-hover:-translate-y-[150%]">
         SEJA ONZY
@@ -74,7 +74,7 @@ const App: React.FC = () => {
       {/* SECTION 1: HERO */}
       <section className="relative pt-32 pb-10 overflow-hidden bg-white">
          {/* Background Glows */}
-         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-50/80 via-white to-white pointer-events-none"></div>
+         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-50/80 via-white to-white pointer-events-none"></div>
          <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-onzy-orange/5 rounded-full blur-[100px] pointer-events-none"></div>
          <div className="absolute top-40 left-0 w-[400px] h-[400px] bg-blue-50/30 rounded-full blur-[80px] pointer-events-none"></div>
 
@@ -121,7 +121,7 @@ const App: React.FC = () => {
           <div className="container mx-auto px-6">
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                   <div>
-                      <div className="inline-block px-3 py-1 rounded-full bg-orange-100 text-onzy-orange text-xs font-bold uppercase tracking-widest mb-6">
+                      <div className="inline-block px-3 py-1 rounded-full bg-purple-100 text-onzy-orange text-xs font-bold uppercase tracking-widest mb-6">
                           Por que isso importa?
                       </div>
                       <h2 className="text-5xl font-bold mb-6">
@@ -235,7 +235,7 @@ const App: React.FC = () => {
                        { title: "Security Cloud", icon: ShieldCheck },
                    ].map((svc, i) => (
                        <div key={i} className="p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition-shadow group">
-                           <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center text-onzy-orange mb-6 group-hover:scale-110 transition-transform">
+                           <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center text-onzy-orange mb-6 group-hover:scale-110 transition-transform">
                                <svc.icon size={24} />
                            </div>
                            <h3 className="font-bold text-xl mb-3">{svc.title}</h3>
@@ -255,17 +255,17 @@ const App: React.FC = () => {
       <ContactForm />
 
       {/* FOOTER (Dark - Just Links) */}
-      <footer className="bg-black text-white py-12 border-t border-gray-900 relative z-[60]">
+      <footer className="bg-black text-white py-12 border-t border-gray-900 relative z-[60] rounded-t-[3rem] -mt-12">
           <div className="container mx-auto px-6">
               <div className="grid md:grid-cols-4 gap-12">
                   <div className="col-span-1 md:col-span-2">
                       <div className="text-2xl font-bold mb-4 flex items-center gap-1">
-                        C
+                        O
                         <span className="relative inline-block mx-[1px]">
-                          o
+                          n
                           <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-onzy-orange rounded-[1px]"></span>
                         </span>
-                        rtex
+                        zy
                       </div>
                       <p className="text-gray-500 max-w-sm text-sm">
                           Agência de soluções digitais completas. Transformando ideias em resultados reais com tecnologia, estratégia e design.

@@ -47,7 +47,8 @@ export const RadarDashboard: React.FC = () => {
   return (
     <section 
       ref={containerRef}
-      className="bg-black py-20 md:py-32 overflow-hidden relative border-t border-white/5 font-sans min-h-[900px] flex flex-col items-center justify-center"
+      // UPDATED: Added rounded-t-[3rem] and -mt-12 for consistent transitions
+      className="bg-black py-24 md:py-32 overflow-hidden relative border-t border-white/5 font-sans min-h-[900px] flex flex-col items-center justify-center rounded-t-[3rem] -mt-12 z-50"
     >
       
       {/* --- BACKGROUND IMAGE (THE WHEEL) --- */}
@@ -64,7 +65,6 @@ export const RadarDashboard: React.FC = () => {
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
         
         {/* --- ARC CONTAINER --- */}
-        {/* Adjusted height to fit tighter cluster */}
         <div className="relative w-full max-w-[1000px] h-[380px] flex justify-center mb-[-40px]">
             
             {/* Cards positioned on the arc */}
@@ -90,7 +90,6 @@ export const RadarDashboard: React.FC = () => {
         </div>
 
         {/* --- MAIN CONTENT CARD --- */}
-        {/* WIDER (max-w-5xl) and less padding for rectangular look */}
         <div 
             ref={cardRef}
             className="relative w-full max-w-5xl mx-auto z-30 mt-12"
@@ -149,11 +148,10 @@ export const RadarDashboard: React.FC = () => {
 
 const ParallaxCard = ({ card, x, y, speed, scrollYProgress, angleDeg }: any) => {
     // Parallax Logic:
-    // Move down based on scroll progress * specific card speed
     const yParallax = useTransform(
         scrollYProgress,
         [0, 1],
-        [0, speed * 60] // Reduced range slightly for tighter look
+        [0, speed * 60]
     );
 
     // Line rotation logic to point to center
@@ -161,11 +159,11 @@ const ParallaxCard = ({ card, x, y, speed, scrollYProgress, angleDeg }: any) => 
 
     return (
         <React.Fragment>
-            {/* Connecting Line - Faint line from center up to card */}
+            {/* Connecting Line */}
             <div 
                 className="absolute bottom-0 left-1/2 w-[1px] bg-gradient-to-t from-white/0 via-white/10 to-transparent origin-bottom z-0 pointer-events-none"
                 style={{ 
-                    height: '380px', // Shortened line
+                    height: '380px', 
                     transform: `translateX(-50%) rotate(${lineRotation}deg)`,
                 }}
             />

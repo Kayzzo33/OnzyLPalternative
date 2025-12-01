@@ -62,12 +62,12 @@ export const Header: React.FC<HeaderProps> = ({ setRoute, currentRoute }) => {
             onClick={() => setRoute(PageRoute.HOME)}
           >
             <span className={`font-bold tracking-tight text-black transition-all duration-300 ${isScrolled ? 'text-xl' : 'text-2xl'}`}>
-              C
+              O
               <span className="relative inline-block mx-[1px]">
-                 o
+                 n
                  <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-onzy-orange rounded-[1px]"></span>
               </span>
-              rtex
+              zy
             </span>
           </div>
 
@@ -86,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({ setRoute, currentRoute }) => {
             ))}
              <button 
                onClick={() => setRoute(PageRoute.GROWTH_ENGINE)}
-               className="ml-2 px-4 py-2 rounded-full text-sm font-medium text-onzy-orange bg-orange-50/50 hover:bg-orange-50 transition-all flex items-center gap-1.5"
+               className="ml-2 px-4 py-2 rounded-full text-sm font-medium text-onzy-orange bg-purple-50/50 hover:bg-purple-50 transition-all flex items-center gap-1.5"
             >
                <span className="w-1.5 h-1.5 bg-onzy-orange rounded-full animate-pulse"></span>
                AI Engine
